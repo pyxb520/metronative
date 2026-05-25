@@ -26,6 +26,11 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Fix SDK path
+        run: |
+          cd MetroNative/android
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+
       - name: Install deps
         run: |
           cd MetroNative
