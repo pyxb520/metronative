@@ -12,6 +12,11 @@ jobs:
           curl -L -o code.zip "https://cnxh2ncxrj4tc.ok.kimi.link/MetroNative-v2.0.zip"
           unzip -q code.zip
 
+      - name: Create lock file
+        run: |
+          cd MetroNative
+          touch package-lock.json
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
