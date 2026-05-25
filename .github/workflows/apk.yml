@@ -1,0 +1,44 @@
+name: Build APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download code
+        run: |
+          curl -L -o code.zip "https://cnxh2ncxrj4tc.ok.kimi.link/MetroNative-v2.0.zip"
+          unzip -q code.zip
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install deps
+        run: |
+          cd MetroNative
+          npm install --legacy-peer-deps --no-audit --no-fund
+
+      - name: Build APK
+        run: |
+          cd MetroNative/android
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon --max-workers=2
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: MetroNative/android/app/build/outputs/apk/release/*.apk
