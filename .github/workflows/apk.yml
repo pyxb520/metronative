@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'temurin'
+n          distribution: 'temurin'
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -35,6 +35,7 @@ jobs:
         run: |
           cd MetroNative
           npm install --legacy-peer-deps --no-audit --no-fund 2>&1
+          ls node_modules/@react-native/gradle-plugin/ 2>/dev/null || (npm install @react-native/gradle-plugin@0.78.0 --save-dev --legacy-peer-deps --no-audit 2>&1 && ls node_modules/@react-native/gradle-plugin/)
 
       - name: Build APK
         run: |
